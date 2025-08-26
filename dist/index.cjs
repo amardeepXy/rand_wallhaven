@@ -25,13 +25,26 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var import_https = __toESM(require("https"), 1);
 var import_fs = __toESM(require("fs"), 1);
 var import_child_process = require("child_process");
+var import_os = __toESM(require("os"), 1);
 var WALLHAVEN_API = "https://wallhaven.cc/api/v1/search?sorting=random&categories=110&purity=110&atleast=1920x1080&ratios=16x9";
-var WALLPAPER_PATH = "/home/amardeep/Pictures/Wallpapers";
+var WALLPAPER_PATH = import_os.default.homedir() + "/.wallhaven";
+function createDownloadDir() {
+  return new Promise((resolve, reject) => {
+    import_fs.default.mkdir(WALLPAPER_PATH, (err) => {
+      if (err) {
+        console.error("Failed to create wallpaper download directory.");
+        return reject(err);
+      }
+      console.log("Wallpaper download directory created.");
+      resolve(WALLPAPER_PATH);
+    });
+  });
+}
 var wallPaperPath;
 async function downloadImage(url) {
   let res = await fetch(url);
   if (!res) {
-    throw new Error("failed to fetch data");
+    throw new Error("Failed to fetch images, You can check your internet connection.");
   }
   res = await res.json();
   const randomNumber = Math.random() * 10;
@@ -72,22 +85,24 @@ async function downloadImage(url) {
   });
 }
 async function saveWallPaper(path) {
-  console.log("Setting wallpaper");
   if (!path) {
-    throw new Error("path must be provided");
+    throw new Error("path must be provided, Please report issue on github for this");
   }
-  (0, import_child_process.exec)(`swaybg -i ${path}`);
+  console.log("Applying wallpaper");
+  (0, import_child_process.exec)(`swaybg -i ${path}`).addListener("spawn", () => console.log("Wallpaper applied \u2714"));
 }
 async function main() {
   let downloadedImagePath;
   try {
+    if (!import_fs.default.existsSync(WALLPAPER_PATH)) {
+      await createDownloadDir();
+    }
     downloadedImagePath = await downloadImage(WALLHAVEN_API);
-    console.log(downloadedImagePath);
     await saveWallPaper(downloadedImagePath);
   } catch (error) {
     if (downloadedImagePath) {
       import_fs.default.unlink(downloadedImagePath, (err) => {
-        console.log("File download failed, Undoing changes...");
+        console.log("File download failed, Undoing changes...", err);
       });
     }
     console.log(error);

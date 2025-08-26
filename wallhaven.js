@@ -1,16 +1,32 @@
 import https from "https";
 import fs from "fs";
 import { exec } from "child_process";
+import os from "os";
 
 const WALLHAVEN_API = "https://wallhaven.cc/api/v1/search?sorting=random&categories=110&purity=110&atleast=1920x1080&ratios=16x9";
-const WALLPAPER_PATH = "/home/amardeep/Pictures/Wallpapers";
+// const WALLPAPER_PATH = "/home/amardeep/Pictures/Wallpapers";
+const WALLPAPER_PATH = os.homedir() + "/.wallhaven";
+
+function createDownloadDir() {
+  return new Promise((resolve, reject) => {
+    fs.mkdir(WALLPAPER_PATH, (err) => {
+      if (err) {
+        console.error("Failed to create wallpaper download directory.");
+        return reject(err);
+      }
+      console.log("Wallpaper download directory created.")
+      resolve(WALLPAPER_PATH);
+    });
+  })
+};
+
 
 let wallPaperPath;
 
 async function downloadImage(url) {
   let res = await fetch(url);
   if (!res) {
-    throw new Error("failed to fetch data");
+    throw new Error("Failed to fetch images, You can check your internet connection.");
   }
 
   res = await res.json();
@@ -64,25 +80,25 @@ async function downloadImage(url) {
 }
 
 async function saveWallPaper(path) {
-  console.log("Setting wallpaper");
   if (!path) {
-    throw new Error("path must be provided");
+    throw new Error("path must be provided, Please report issue on github for this");
   }
-
-
-  exec(`swaybg -i ${path}`);
+  console.log("Applying wallpaper");
+  exec(`swaybg -i ${path}`).addListener("spawn", () => console.log("Wallpaper applied ✔"));
 };
 
 async function main() {
   let downloadedImagePath;
   try {
+    if (!fs.existsSync(WALLPAPER_PATH)) {
+      await createDownloadDir();
+    }
     downloadedImagePath = await downloadImage(WALLHAVEN_API);
-    console.log(downloadedImagePath);
     await saveWallPaper(downloadedImagePath);
   } catch (error) {
     if (downloadedImagePath) {
       fs.unlink(downloadedImagePath, err => {
-        console.log("File download failed, Undoing changes...");
+        console.log("File download failed, Undoing changes...", err);
       })
     }
     console.log(error);

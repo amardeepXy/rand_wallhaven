@@ -5,7 +5,8 @@
   "main": "wallhaven.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild wallhaven.js --bundle --platform=node --format=cjs --outfile=dist/index.cjs"
+    "build": "esbuild wallhaven.js --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "compile": "pkg ./dist/index.cjs --targets node18-linux-x64 -o wallhaven"
   },
   "dependencies": {
     "pkg": "^5.8.1"
