@@ -2,8 +2,8 @@
 
 A simple command-line tool to download random wallpapers from [wallhaven.cc](https://wallhaven.cc/) and save it as wallpaper;
 
-![Wallpaper Screenshot](./demo/1.png)
 ![Wallpaper Screenshot](./demo/2.png)
+![Wallpaper Screenshot](./demo/anime1.png)
 
 ## Direction to use
 
