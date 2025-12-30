@@ -19,7 +19,7 @@ const TRANSITION_TYPE = "simple | fade | left | right | top | bottom | wipe | gr
 const program = new Command();
 program
   .name("rand_wallhaven")
-  .description("Dead simple app to apply wallpaper from wallhaven.cc")
+  .description("A command line tool to set random wallpapers using swww")
   .version("1.0.0")
   .addOption(new Option("--transition-type <TRANSITION_TYPE>", "Sets the type of transition. Default is 'grow', that fades into the new image").choices(TRANSITION_TYPE))
   .addOption(new Option("--transition-step <number>", "How fast the transition approaches the new image. default(10)"))

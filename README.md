@@ -1,6 +1,6 @@
 # rand_wallhaven
 
-A simple command-line tool to download random wallpapers from [wallhaven.cc](https://wallhaven.cc/) and save it as wallpaper;
+A simple command-line tool to set random wallpapers on wayland using swww.
 
 ![Wallpaper Screenshot](./demo/2.png)
 ![Wallpaper Screenshot](./demo/anime1.png)
@@ -9,8 +9,8 @@ A simple command-line tool to download random wallpapers from [wallhaven.cc](htt
 
 1. Download the executable file from [Releases](https://github.com/amardeepXy/rand_wallhaven/releases/latest)
    > [!IMPORTANT]
-   > Since this project is using swaybg to set the wallpaper, Install `swaybg`.
-2. Install swaybg `yay -S swaybg`.
+   > Since this project is using swaybg to set the wallpaper, Install `swww`.
+2. Install swaybg `yay -S swww`(Use your package manager).
 3. Run the executable file, Run `./wallhaven` to run the program.
 
 ## For manual build
@@ -30,12 +30,13 @@ A simple command-line tool to download random wallpapers from [wallhaven.cc](htt
 
 > [!TIP]
 > Move the executable `wallhaven` file to `/usr/bin` or `/usr/local/bin` to make it available as a command.
+> Alos don't forget to use at keybind 😽.
 
 ## Contribution
 
 If you want to contribue to this project follow the standard github guidelines and push your changes with a new branch.
 
-## New implementations
+## New implementations (AIM)
 
 1. [ ] Stateful History
        `rand_wallhaven prev
