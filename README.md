@@ -25,10 +25,24 @@ A simple command-line tool to download random wallpapers from [wallhaven.cc](htt
 6. Run the executable `./wallhaven`.
 
 ---
+
 ---
 
 > [!TIP]
 > Move the executable `wallhaven` file to `/usr/bin` or `/usr/local/bin` to make it available as a command.
 
 ## Contribution
-   If you want to contribue to this project follow the standard github guidelines and push your changes with a new branch. 
+
+If you want to contribue to this project follow the standard github guidelines and push your changes with a new branch.
+
+## New implementations
+
+1. [ ] Stateful History
+       `rand_wallhaven prev
+rand_wallhaven next`
+2. [ ] Rank fetched images on the basis of favourites, views and set it.
+3. [ ] Make the app configurable by config file.
+4. [ ] Search functionality.
+5. [ ] Allow to create profiles.
+       `rand_wallhaven set --profile calm
+rand_wallhaven set --profile aggressive`
