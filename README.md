@@ -4,6 +4,7 @@ A simple command-line tool to set random wallpapers on wayland using swww.
 
 ![Wallpaper Screenshot](./demo/2.png)
 ![Wallpaper Screenshot](./demo/anime1.png)
+![Demo Video](https://www.dropbox.com/scl/fi/r23r0u31q9bz9wbpibpss/wallhaven_demo.gif?rlkey=06hng556lxur3l7ru604rtl8v&st=au61dqz0&dl=0)
 
 ## Direction to use
 
