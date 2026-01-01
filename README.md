@@ -29,7 +29,7 @@ A simple command-line tool to set random wallpapers on wayland using swww.
 
 ## Example usage
 
-`rand_wallhaven --transition-type wipe --transition-step 50`
+`wallhaven --transition-type wipe --transition-step 50`
 
 ---
 
