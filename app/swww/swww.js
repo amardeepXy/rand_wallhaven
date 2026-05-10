@@ -1,8 +1,10 @@
 import { execFile, spawn } from "child_process";
 
+import { WALLPAPER_ENGINE, WALLPAPER_ENGINE_DAEMON } from "../wallhaven.js";
+
 function isSwwwDaemonRunning() {
   return new Promise((res, rej) => {
-    execFile("swww", ["query"], (err, stdout) => {
+    execFile(WALLPAPER_ENGINE, ["query"], (err, stdout) => {
       if (err) return rej(false);
       if (!stdout || stdout.trim() == "") {
         return rej(false);
@@ -16,32 +18,37 @@ function isSwwwDaemonRunning() {
 
 function startSwwwDaemon() {
   return new Promise((res, rej) => {
-    spawn("swww-daemon", {
-      detached: true,
-      stdio: "ignore",
-    }, err => {
+    spawn(WALLPAPER_ENGINE_DAEMON, err => {
       if (err) return rej(err);
-      return res("swww daemon started");
+      return res("awww daemon started");
     }).unref()
   })
 }
 
 
 function isSwwwConfigured() {
-  return new Promise(res => {
-    execFile("swww", ["--version"], (err, stdout) => {
+  return new Promise((res, rej) => {
+
+    // check if awww is installed
+    execFile(WALLPAPER_ENGINE, ["--version"], (err) => {
       if (err && err.code === "ENOENT") {
-        return rej("swww is not installed on your system. Install it!");
+        return rej("awww is not installed on your system. Install it!");
+      } else if (err) {
+        return rej(`${err} \n Report on github with the error message`);
       }
-      res(stdout.trim());
+      // res(stdout.trim());
 
     });
-    execFile("swww-daemon", ["--version"], (err, stdout) => {
+
+    // check if awww-daemon is installed
+    execFile(WALLPAPER_ENGINE_DAEMON, ["--version"], (err, stdout) => {
       if (err && err.code === "ENOENT") {
-        return rej("swww-daemon is not installed  on your system. Install swww properly!");
+        return rej("awww-daemon is not installed  on your system. Install swww properly!");
+      } else if (err) {
+        return rej(`${err} \n Report on github with the error message`);
       }
 
-      res(stdout.trim());
+      res(true);
 
     })
   });
@@ -51,20 +58,24 @@ async function ensureSwww() {
   let isConfigured;
   let isDaemonRunning;
   try {
+    // Check if awww is installed on system
     isConfigured = await isSwwwConfigured();
   } catch (err) {
+    console.error(err, "Report the error on github with message");
     return process.exit(1);
   }
 
   try {
-
+    // Check if swww-daemon is running 
     isDaemonRunning = await isSwwwDaemonRunning();
   } catch (err) {
     isDaemonRunning = false
   }
 
-  if (!!isDaemonRunning && !!isConfigured) return true;
+  console.log({ isDaemonRunning, isConfigured });
+  if (isDaemonRunning && !!isConfigured) return true;
 
+  console.log("loggic error");
   try {
     isDaemonRunning = await startSwwwDaemon()
   } catch (error) {

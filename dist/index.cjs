@@ -7,6 +7,10 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -23,6 +27,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/commander/lib/error.js
 var require_error = __commonJS({
@@ -578,8 +583,8 @@ var require_help = __commonJS({
           helper.visibleOptions(cmd),
           (option) => option.helpGroupHeading ?? "Options:"
         );
-        optionGroups.forEach((options, group) => {
-          const optionList = options.map((option) => {
+        optionGroups.forEach((options2, group) => {
+          const optionList = options2.map((option) => {
             return callFormatItem(
               helper.styleOptionTerm(helper.optionTerm(option)),
               helper.styleOptionDescription(helper.optionDescription(option))
@@ -1021,11 +1026,11 @@ var require_option = __commonJS({
       /**
        * @param {Option[]} options
        */
-      constructor(options) {
+      constructor(options2) {
         this.positiveOptions = /* @__PURE__ */ new Map();
         this.negativeOptions = /* @__PURE__ */ new Map();
         this.dualOptions = /* @__PURE__ */ new Set();
-        options.forEach((option) => {
+        options2.forEach((option) => {
           if (option.negate) {
             this.negativeOptions.set(option.attributeName(), option);
           } else {
@@ -1188,8 +1193,8 @@ var require_command = __commonJS({
     var EventEmitter = require("node:events").EventEmitter;
     var childProcess = require("node:child_process");
     var path = require("node:path");
-    var fs2 = require("node:fs");
-    var process = require("node:process");
+    var fs3 = require("node:fs");
+    var process2 = require("node:process");
     var { Argument: Argument2, humanReadableArgName } = require_argument();
     var { CommanderError: CommanderError2 } = require_error();
     var { Help: Help2, stripColor } = require_help();
@@ -1236,13 +1241,13 @@ var require_command = __commonJS({
         this._showSuggestionAfterError = true;
         this._savedState = null;
         this._outputConfiguration = {
-          writeOut: (str) => process.stdout.write(str),
-          writeErr: (str) => process.stderr.write(str),
+          writeOut: (str) => process2.stdout.write(str),
+          writeErr: (str) => process2.stderr.write(str),
           outputError: (str, write) => write(str),
-          getOutHelpWidth: () => process.stdout.isTTY ? process.stdout.columns : void 0,
-          getErrHelpWidth: () => process.stderr.isTTY ? process.stderr.columns : void 0,
-          getOutHasColors: () => useColor() ?? (process.stdout.isTTY && process.stdout.hasColors?.()),
-          getErrHasColors: () => useColor() ?? (process.stderr.isTTY && process.stderr.hasColors?.()),
+          getOutHelpWidth: () => process2.stdout.isTTY ? process2.stdout.columns : void 0,
+          getErrHelpWidth: () => process2.stderr.isTTY ? process2.stderr.columns : void 0,
+          getOutHasColors: () => useColor() ?? (process2.stdout.isTTY && process2.stdout.hasColors?.()),
+          getErrHasColors: () => useColor() ?? (process2.stderr.isTTY && process2.stderr.hasColors?.()),
           stripColor: (str) => stripColor(str)
         };
         this._hidden = false;
@@ -1636,7 +1641,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
         if (this._exitCallback) {
           this._exitCallback(new CommanderError2(exitCode, code, message));
         }
-        process.exit(exitCode);
+        process2.exit(exitCode);
       }
       /**
        * Register callback `fn` for the command.
@@ -2036,16 +2041,16 @@ Expecting one of '${allowedValues.join("', '")}'`);
         }
         parseOptions = parseOptions || {};
         if (argv === void 0 && parseOptions.from === void 0) {
-          if (process.versions?.electron) {
+          if (process2.versions?.electron) {
             parseOptions.from = "electron";
           }
-          const execArgv = process.execArgv ?? [];
+          const execArgv = process2.execArgv ?? [];
           if (execArgv.includes("-e") || execArgv.includes("--eval") || execArgv.includes("-p") || execArgv.includes("--print")) {
             parseOptions.from = "eval";
           }
         }
         if (argv === void 0) {
-          argv = process.argv;
+          argv = process2.argv;
         }
         this.rawArgs = argv.slice();
         let userArgs;
@@ -2056,7 +2061,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
             userArgs = argv.slice(2);
             break;
           case "electron":
-            if (process.defaultApp) {
+            if (process2.defaultApp) {
               this._scriptPath = argv[1];
               userArgs = argv.slice(2);
             } else {
@@ -2182,7 +2187,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @param {string} subcommandName
        */
       _checkForMissingExecutable(executableFile, executableDir, subcommandName) {
-        if (fs2.existsSync(executableFile)) return;
+        if (fs3.existsSync(executableFile)) return;
         const executableDirMessage = executableDir ? `searched for local subcommand relative to directory '${executableDir}'` : "no directory for search for local subcommand, use .executableDir() to supply a custom directory";
         const executableMissing = `'${executableFile}' does not exist
  - if '${subcommandName}' is not meant to be an executable command, remove description parameter from '.command()' and use '.description()' instead
@@ -2201,10 +2206,10 @@ Expecting one of '${allowedValues.join("', '")}'`);
         const sourceExt = [".js", ".ts", ".tsx", ".mjs", ".cjs"];
         function findFile(baseDir, baseName) {
           const localBin = path.resolve(baseDir, baseName);
-          if (fs2.existsSync(localBin)) return localBin;
+          if (fs3.existsSync(localBin)) return localBin;
           if (sourceExt.includes(path.extname(baseName))) return void 0;
           const foundExt = sourceExt.find(
-            (ext) => fs2.existsSync(`${localBin}${ext}`)
+            (ext) => fs3.existsSync(`${localBin}${ext}`)
           );
           if (foundExt) return `${localBin}${foundExt}`;
           return void 0;
@@ -2216,7 +2221,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
         if (this._scriptPath) {
           let resolvedScriptPath;
           try {
-            resolvedScriptPath = fs2.realpathSync(this._scriptPath);
+            resolvedScriptPath = fs3.realpathSync(this._scriptPath);
           } catch {
             resolvedScriptPath = this._scriptPath;
           }
@@ -2243,11 +2248,11 @@ Expecting one of '${allowedValues.join("', '")}'`);
         }
         launchWithNode = sourceExt.includes(path.extname(executableFile));
         let proc;
-        if (process.platform !== "win32") {
+        if (process2.platform !== "win32") {
           if (launchWithNode) {
             args.unshift(executableFile);
-            args = incrementNodeInspectorPort(process.execArgv).concat(args);
-            proc = childProcess.spawn(process.argv[0], args, { stdio: "inherit" });
+            args = incrementNodeInspectorPort(process2.execArgv).concat(args);
+            proc = childProcess.spawn(process2.argv[0], args, { stdio: "inherit" });
           } else {
             proc = childProcess.spawn(executableFile, args, { stdio: "inherit" });
           }
@@ -2258,13 +2263,13 @@ Expecting one of '${allowedValues.join("', '")}'`);
             subcommand._name
           );
           args.unshift(executableFile);
-          args = incrementNodeInspectorPort(process.execArgv).concat(args);
-          proc = childProcess.spawn(process.execPath, args, { stdio: "inherit" });
+          args = incrementNodeInspectorPort(process2.execArgv).concat(args);
+          proc = childProcess.spawn(process2.execPath, args, { stdio: "inherit" });
         }
         if (!proc.killed) {
           const signals = ["SIGUSR1", "SIGUSR2", "SIGTERM", "SIGINT", "SIGHUP"];
           signals.forEach((signal) => {
-            process.on(signal, () => {
+            process2.on(signal, () => {
               if (proc.killed === false && proc.exitCode === null) {
                 proc.kill(signal);
               }
@@ -2275,7 +2280,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
         proc.on("close", (code) => {
           code = code ?? 1;
           if (!exitCallback) {
-            process.exit(code);
+            process2.exit(code);
           } else {
             exitCallback(
               new CommanderError2(
@@ -2297,7 +2302,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
             throw new Error(`'${executableFile}' not executable`);
           }
           if (!exitCallback) {
-            process.exit(1);
+            process2.exit(1);
           } else {
             const wrappedError = new CommanderError2(
               1,
@@ -2797,13 +2802,13 @@ Expecting one of '${allowedValues.join("', '")}'`);
        */
       _parseOptionsEnv() {
         this.options.forEach((option) => {
-          if (option.envVar && option.envVar in process.env) {
+          if (option.envVar && option.envVar in process2.env) {
             const optionKey = option.attributeName();
             if (this.getOptionValue(optionKey) === void 0 || ["default", "config", "env"].includes(
               this.getOptionValueSource(optionKey)
             )) {
               if (option.required || option.optional) {
-                this.emit(`optionEnv:${option.name()}`, process.env[option.envVar]);
+                this.emit(`optionEnv:${option.name()}`, process2.env[option.envVar]);
               } else {
                 this.emit(`optionEnv:${option.name()}`);
               }
@@ -3327,7 +3332,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
        */
       help(contextOptions) {
         this.outputHelp(contextOptions);
-        let exitCode = Number(process.exitCode ?? 0);
+        let exitCode = Number(process2.exitCode ?? 0);
         if (exitCode === 0 && contextOptions && typeof contextOptions !== "function" && contextOptions.error) {
           exitCode = 1;
         }
@@ -3417,9 +3422,9 @@ Expecting one of '${allowedValues.join("', '")}'`);
       });
     }
     function useColor() {
-      if (process.env.NO_COLOR || process.env.FORCE_COLOR === "0" || process.env.FORCE_COLOR === "false")
+      if (process2.env.NO_COLOR || process2.env.FORCE_COLOR === "0" || process2.env.FORCE_COLOR === "false")
         return false;
-      if (process.env.FORCE_COLOR || process.env.CLICOLOR_FORCE !== void 0)
+      if (process2.env.FORCE_COLOR || process2.env.CLICOLOR_FORCE !== void 0)
         return true;
       return void 0;
     }
@@ -3450,11 +3455,15 @@ var require_commander = __commonJS({
   }
 });
 
-// wallhaven.js
-var import_https = __toESM(require("https"), 1);
-var import_fs = __toESM(require("fs"), 1);
-var import_child_process = require("child_process");
+// app/wallhaven.js
+var wallhaven_exports = {};
+__export(wallhaven_exports, {
+  WALLPAPER_ENGINE: () => WALLPAPER_ENGINE,
+  WALLPAPER_ENGINE_DAEMON: () => WALLPAPER_ENGINE_DAEMON
+});
+module.exports = __toCommonJS(wallhaven_exports);
 var import_os = __toESM(require("os"), 1);
+var import_fs2 = __toESM(require("fs"), 1);
 
 // node_modules/commander/esm.mjs
 var import_index = __toESM(require_commander(), 1);
@@ -3473,25 +3482,23 @@ var {
   Help
 } = import_index.default;
 
-// wallhaven.js
-var program2 = new Command();
-program2.name("rand_wallhaven").description("Dead simple app to apply wallpaper from wallhaven.cc").version("1.0.0").option("-w, --wallpaper", "Apply wallpaper");
-var WALLHAVEN_API = "https://wallhaven.cc/api/v1/search?sorting=random&categories=110&purity=110&atleast=1920x1080&ratios=16x9";
-var WALLPAPER_PATH = import_os.default.homedir() + "/.wallhaven";
-function createDownloadDir() {
+// app/wallhaven/client.js
+var import_https = __toESM(require("https"), 1);
+var import_fs = __toESM(require("fs"), 1);
+function createDownloadDir(downloadDir) {
   return new Promise((resolve, reject) => {
-    import_fs.default.mkdir(WALLPAPER_PATH, (err) => {
+    import_fs.default.mkdir(downloadDir, (err) => {
       if (err) {
         console.error("Failed to create wallpaper download directory.");
         return reject(err);
       }
       console.log("Wallpaper download directory created.");
-      resolve(WALLPAPER_PATH);
+      resolve(downloadDir);
     });
   });
 }
 var wallPaperPath;
-async function downloadImage(url) {
+async function downloadImage(url, savingDir) {
   let res = await fetch(url);
   if (!res) {
     throw new Error("Failed to fetch images, You can check your internet connection.");
@@ -3500,7 +3507,7 @@ async function downloadImage(url) {
   const randomNumber = Math.random() * 10;
   const randomImageUrl = res.data[Math.floor(randomNumber)].path;
   const imageName = randomImageUrl.split("/");
-  const fullImagePath = WALLPAPER_PATH + "/" + imageName[imageName.length - 1];
+  const fullImagePath = savingDir + "/" + imageName[imageName.length - 1];
   wallPaperPath = fullImagePath;
   const file = import_fs.default.createWriteStream(fullImagePath);
   return new Promise((resolve, rej) => {
@@ -3516,14 +3523,16 @@ async function downloadImage(url) {
         downloadedLength += chunk.length;
         const currentPercentage = Math.floor(downloadedLength / totalLength * 100);
         if (currentPercentage > lastPercentage) {
-          console.log("Download progress: ", currentPercentage, "%");
+          if (process.stdout.isTTY) {
+            process.stdout.write(`\rDownload progress: ${currentPercentage}%`);
+          }
           lastPercentage = currentPercentage;
         }
       });
       response.pipe(file);
       file.on("finish", () => {
         file.close();
-        console.log("File downloaded");
+        console.log("\nFile downloaded");
         resolve(fullImagePath);
       });
     }).on("error", (err) => {
@@ -3534,25 +3543,106 @@ async function downloadImage(url) {
     });
   });
 }
-async function saveWallPaper(path) {
+
+// app/utility/utility.js
+var import_child_process = require("child_process");
+async function saveWallPaper(path, options2) {
   if (!path) {
-    throw new Error("path must be provided, Please report issue on github for this");
+    throw new Error("saveWallPaper function misused, Please report issue on github with error message");
   }
-  console.log("Applying wallpaper");
-  (0, import_child_process.exec)(`swww img ${path} --transition-fps 60 --transition-type wipe`).addListener("spawn", () => console.log("Wallpaper applied \u2714")).addListener("error", (err) => console.log("Wallpaper failed to apply", err));
+  (0, import_child_process.exec)(`${WALLPAPER_ENGINE} img ${path} --transition-fps 60 --transition-step ${options2.transitionStep ?? 80} --transition-type ${options2.transitionType ?? "random"}`).addListener("spawn", () => console.log("Wallpaper applied \u2714")).addListener("error", (err) => console.log("Wallpaper failed to apply", err));
 }
-async function main() {
-  let downloadedImagePath;
-  console.log("Make sure swww-daemon is running");
+
+// app/swww/swww.js
+var import_child_process2 = require("child_process");
+function isSwwwDaemonRunning() {
+  return new Promise((res, rej) => {
+    (0, import_child_process2.execFile)(WALLPAPER_ENGINE, ["query"], (err, stdout) => {
+      if (err) return rej(false);
+      if (!stdout || stdout.trim() == "") {
+        return rej(false);
+      }
+      return res(true);
+    });
+  });
+}
+function startSwwwDaemon() {
+  return new Promise((res, rej) => {
+    (0, import_child_process2.spawn)(WALLPAPER_ENGINE_DAEMON, (err) => {
+      if (err) return rej(err);
+      return res("awww daemon started");
+    }).unref();
+  });
+}
+function isSwwwConfigured() {
+  return new Promise((res, rej) => {
+    (0, import_child_process2.execFile)(WALLPAPER_ENGINE, ["--version"], (err) => {
+      if (err && err.code === "ENOENT") {
+        return rej("awww is not installed on your system. Install it!");
+      } else if (err) {
+        return rej(`${err} 
+ Report on github with the error message`);
+      }
+    });
+    (0, import_child_process2.execFile)(WALLPAPER_ENGINE_DAEMON, ["--version"], (err, stdout) => {
+      if (err && err.code === "ENOENT") {
+        return rej("awww-daemon is not installed  on your system. Install swww properly!");
+      } else if (err) {
+        return rej(`${err} 
+ Report on github with the error message`);
+      }
+      res(true);
+    });
+  });
+}
+async function ensureSwww() {
+  let isConfigured;
+  let isDaemonRunning;
   try {
-    if (!import_fs.default.existsSync(WALLPAPER_PATH)) {
-      await createDownloadDir();
+    isConfigured = await isSwwwConfigured();
+  } catch (err) {
+    console.error(err, "Report the error on github with message");
+    return process.exit(1);
+  }
+  try {
+    isDaemonRunning = await isSwwwDaemonRunning();
+  } catch (err) {
+    isDaemonRunning = false;
+  }
+  console.log({ isDaemonRunning, isConfigured });
+  if (isDaemonRunning && !!isConfigured) return true;
+  console.log("loggic error");
+  try {
+    isDaemonRunning = await startSwwwDaemon();
+  } catch (error) {
+    return process.exit(1);
+  }
+}
+
+// app/wallhaven.js
+var WALLPAPER_ENGINE = "awww";
+var WALLPAPER_ENGINE_DAEMON = "awww-daemon";
+var WALLHAVEN_API = "https://wallhaven.cc/api/v1/search?sorting=random&categories=110&purity=110&atleast=1920x1080&ratios=16x9";
+var WALLPAPER_PATH = import_os.default.homedir() + "/.wallhaven";
+var TRANSITION_TYPE = "simple | fade | left | right | top | bottom | wipe | grow | center | outer | random | wave".replaceAll("|", "").split("  ");
+var program2 = new Command();
+program2.name("rand_wallhaven").description("A command line tool to set random wallpapers using awww").version("1.0.0").addOption(new Option("--transition-type <TRANSITION_TYPE>", "Sets the type of transition. Default is 'grow', that fades into the new image").choices(TRANSITION_TYPE)).addOption(new Option("--transition-step <number>", "How fast the transition approaches the new image. default(10)")).parse(process.argv);
+var options = program2.opts();
+async function main() {
+  console.log("Welcome user");
+  let downloadedImagePath;
+  try {
+    await ensureSwww();
+    console.log("awww ensured");
+    if (!import_fs2.default.existsSync(WALLPAPER_PATH)) {
+      await createDownloadDir(WALLPAPER_PATH);
     }
-    downloadedImagePath = await downloadImage(WALLHAVEN_API);
-    await saveWallPaper(downloadedImagePath);
+    console.log("wallpaper downloaded");
+    downloadedImagePath = await downloadImage(WALLHAVEN_API, WALLPAPER_PATH);
+    await saveWallPaper(downloadedImagePath, options);
   } catch (error) {
     if (downloadedImagePath) {
-      import_fs.default.unlink(downloadedImagePath, (err) => {
+      import_fs2.default.unlink(downloadedImagePath, (err) => {
         console.log("File download failed, Undoing changes...", err);
       });
     }
@@ -3560,3 +3650,8 @@ async function main() {
   }
 }
 main();
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  WALLPAPER_ENGINE,
+  WALLPAPER_ENGINE_DAEMON
+});
