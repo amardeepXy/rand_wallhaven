@@ -1,5 +1,6 @@
 import https from "https";
 import fs from "fs";
+import { statusCodeToText } from "../utility/utility.js";
 
 export function createDownloadDir(downloadDir) {
   return new Promise((resolve, reject) => {
@@ -22,6 +23,11 @@ export async function downloadImage(url, savingDir) {
   if (!res) {
     throw new Error("Failed to fetch images, You can check your internet connection.");
   }
+
+  if (!res.ok) {
+    throw new Error(statusCodeToText(res.statusCode))
+  }
+  console.log("Response (client.js): ", res);
 
   res = await res.json();
 

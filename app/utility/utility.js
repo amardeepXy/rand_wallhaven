@@ -11,4 +11,17 @@ export async function saveWallPaper(path, options) {
     .addListener("error", err => console.log("Wallpaper failed to apply", err));
 };
 
+/** Convert status code to text message 
+ * @param {number} statusCode  - Network status code*/
+export function statusCodeToText(statusCode) {
+
+
+  if (/^4\d*\$/.test(statusCode)) {
+    return "Something wrong in application";
+  } else if (/^5\d*\$/.test(statusCode)) {
+    return "Error at wallhaven side. Check if wallhaven website is up";
+  } else {
+    return "Something went wrong when API call to wallhaven";
+  }
+}
 
