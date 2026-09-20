@@ -9,7 +9,6 @@ export function createDownloadDir(downloadDir) {
         console.error("Failed to create wallpaper download directory.");
         return reject(err);
       }
-      console.log("Wallpaper download directory created.")
       resolve(downloadDir);
     });
   })
@@ -27,7 +26,6 @@ export async function downloadImage(url, savingDir) {
   if (!res.ok) {
     throw new Error(statusCodeToText(res.statusCode))
   }
-  console.log("Response (client.js): ", res);
 
   res = await res.json();
 
